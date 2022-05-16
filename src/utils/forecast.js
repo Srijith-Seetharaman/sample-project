@@ -25,7 +25,9 @@ const forecast = (latitude, longitude, callback) => {
             units === "m" ? "Celsius" : units === "s" ? "Kelvin" : "Fahrenheit"
           } outside. It feels like ${body.current.feelslike} degrees ${
             units === "m" ? "Celsius" : units === "s" ? "Kelvin" : "Fahrenheit"
-          } outside.`
+          } outside. The wind outside is blowing with a speed of ${
+            body.current.wind_speed
+          } with a visibility of ${body.current.visibility}`
         );
     }
   );
