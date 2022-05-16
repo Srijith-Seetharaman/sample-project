@@ -1,17 +1,34 @@
-const request = require('request')
+const request = require("request");
+
+const weatherStackUrl = `http://api.weatherstack.com/current`,
+  accessKey = "cc46c85449d162ee850df4a2e42c3759",
+  units = "f";
 
 const forecast = (latitude, longitude, callback) => {
-    const url = 'https://api.darksky.net/forecast/9d1465c6f3bb7a6c71944bdd8548d026/' + latitude + ',' + longitude
+  request(
+    {
+      url: `${weatherStackUrl}?access_key=${accessKey}&query=${latitude},${longitude}&units=${units}`,
+      json: true,
+    },
+    (error, { body } = {}) => {
+      error &&
+        callback(`Weather data not available. Sorry, please try again later.`);
 
-    request({ url, json: true }, (error, { body }) => {
-        if (error) {
-            callback('Unable to connect to weather service!', undefined)
-        } else if (body.error) {
-            callback('Unable to find location', undefined)
-        } else {
-            callback(undefined, body.daily.data[0].summary + ' It is currently ' + body.currently.temperature + ' degress out. There is a ' + body.currently.precipProbability + '% chance of rain.')
-        }
-    })
-}
+      body.error &&
+        callback(`Unable to find weather using the given location.`);
 
-module.exports = forecast
+      body.current &&
+        callback(
+          `${body.current.weather_descriptions[0]}. It is currently ${
+            body.current.temperature
+          } degrees ${
+            units === "m" ? "Celsius" : units === "s" ? "Kelvin" : "Fahrenheit"
+          } outside. It feels like ${body.current.feelslike} degrees ${
+            units === "m" ? "Celsius" : units === "s" ? "Kelvin" : "Fahrenheit"
+          } outside.`
+        );
+    }
+  );
+};
+
+module.exports = forecast;
