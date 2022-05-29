@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm i",
-    "start": "npm run build && node src/app.js",
-    "dev": "npm run build && nodemon src/app.js -e js,hbs"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js -e js,hbs"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +16,6 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.16"
+    "nodemon": "^1.2.0"
   }
 }
